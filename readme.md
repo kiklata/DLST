@@ -252,7 +252,7 @@ library(tfhub)
 library(data.table)
 
 # Calculate Feature --------------------------------------------------------------
-model = load_model_tf(filepath = '/data/V2_2_normal_epoch16')
+model = load_model_tf(filepath = 'V2_2_normal_epoch16')
 #summary(model)
 model_feature = keras_model(inputs = model$input,outputs = get_layer(model, 'global_average_pooling2d_1')$output)
 
