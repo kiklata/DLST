@@ -15,12 +15,12 @@ import openslide
 from resizeimage import resizeimage
 import string
 
-print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'started')
 
 args_list = sys.argv
 
 '''imgfile path'''
 work_to_be_done = str(args_list[1])
+print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' started')
 svspath = "/mnt/d/bioinfo/DLSPseq/data/TCGA_image/"+work_to_be_done+'/'
 resizepath = '/mnt/d/bioinfo/DLSPseq/data/resize_img/'+work_to_be_done+'/'
 normpath = '/mnt/d/bioinfo/DLSPseq/data/norm_img/'+work_to_be_done+'/'
@@ -89,16 +89,16 @@ def normalizeStaining(img, saveFile=None, Io=240, alpha=1, beta=0.15,sample='sam
     Inorm[Inorm>255] = 254
     Inorm = np.reshape(Inorm.T, (h, w, 3)).astype(np.uint8)  
     # unmix hematoxylin and eosin
-    H = np.multiply(Io, np.exp(np.expand_dims(-HERef[:,0], axis=1).dot(np.expand_dims(C2[0,:], axis=0))))
-    H[H>255] = 254
-    H = np.reshape(H.T, (h, w, 3)).astype(np.uint8)
-    E = np.multiply(Io, np.exp(np.expand_dims(-HERef[:,1], axis=1).dot(np.expand_dims(C2[1,:], axis=0))))
-    E[E>255] = 254
-    E = np.reshape(E.T, (h, w, 3)).astype(np.uint8)
+    #H = np.multiply(Io, np.exp(np.expand_dims(-HERef[:,0], axis=1).dot(np.expand_dims(C2[0,:], axis=0))))
+    #H[H>255] = 254
+    #H = np.reshape(H.T, (h, w, 3)).astype(np.uint8)
+    #E = np.multiply(Io, np.exp(np.expand_dims(-HERef[:,1], axis=1).dot(np.expand_dims(C2[1,:], axis=0))))
+    #E[E>255] = 254
+    #E = np.reshape(E.T, (h, w, 3)).astype(np.uint8)
     if saveFile is not None:
         os.makedirs(normpath+sample,exist_ok=True)
         Image.fromarray(Inorm).save(normpath+sample+'/'+img_file,quality = 100)
-    return Inorm, H, E
+    return Inorm #, H, E
 
 '''resize TCGA svs to 224X224 pixel jpeg in 40X scope'''
 files= os.listdir(svspath)
@@ -124,15 +124,15 @@ for filename in files:
     os.makedirs(resizepath +str(filename[0:23]),exist_ok=True)
     for x in range(1, w, seq):
         for y in range(1, h, seq):
-            img1=img.read_region(location=(x,y), level=0, size=(sz,sz))
-            img11=img1.convert("RGB")
-            img111=img11.resize((224,224),Image.ANTIALIAS)
-            grad=getGradientMagnitude(np.array(img111))
-            unique, counts = np.unique(grad, return_counts=True)
+            img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.ANTIALIAS)
+            #img11=img1.convert("RGB")
+            #img111=img11.resize((224,224),Image.ANTIALIAS)
+            #grad=getGradientMagnitude(np.array(img111))
+            unique, counts = np.unique(getGradientMagnitude(np.array(img111)), return_counts=True)
             if counts[np.argwhere(unique<=20)].sum() < 224*224*0.6:                
                 img111.save(resizepath + str(filename[0:23]) + "/" + str(x) + "_" + str(y) + '.jpg', 'JPEG', optimize=True, quality=100)
                 
-print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'resized')
+print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' resized')
 
 '''normalized'''
 files= os.listdir(resizepath) 
@@ -149,4 +149,4 @@ for filenames in files:
             with open(normpath+'error_img.txt','a') as log:
                 log.write(filenames+'/'+imgs+'\n')
         
-print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'normalized')
+print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' normalized')
