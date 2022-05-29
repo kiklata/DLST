@@ -243,7 +243,7 @@ save as 'run.sh', then run
 run.sh 20220501 20220502 2220503
 ```
 
-## Calculated tiles features
+## Calculate tiles features
 
 ```R
 # Import Packages ---------------------------------------------------------
