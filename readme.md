@@ -6,7 +6,7 @@ In R environment, we use interface of tensorflow and keras
 
 ```R
 
-setwd() # set workdir
+setwd('DLST') # set workdir
 
 # Import packages ---------------------------------------------------------
 library(keras)
@@ -45,10 +45,10 @@ model %>% fit(
     training_data, 
     steps_per_epoch = training_data$n/training_data$batch_size,
     validation_data = validation_data,epochs = 15)
-save_model_tf(object = model, filepath = "V2_2_normal_epoch16")
+save_model_tf(object = model, filepath = "/data/V2_2_normal_epoch16")
 
 # Test model --------------------------------------------------------------
-model <- load_model_tf(filepath = "V2_2_normal_epoch16")
+model <- load_model_tf(filepath = "/data/V2_2_normal_epoch16")
 image_generator1 <- image_data_generator( rescale=1/255)
 test_root<-'/data/test/' #path to test
 test_data <- flow_images_from_directory(
