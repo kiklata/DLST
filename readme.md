@@ -293,7 +293,6 @@ run multiple scripts in the background (rstudio jobs)
 ---mobilenet.R  
 ---preprocessing.py 
 ---run.sh 
----readme.md  
 --data  
 ---TCGA_image 
 ---resize_img 
@@ -301,7 +300,8 @@ run multiple scripts in the background (rstudio jobs)
 ---thumbnail  
 ---V2_2_normal_epoch16  
 --result  
---ref_information
+--ref_information 
+--readme.md
 ```
 
 ## Reference
