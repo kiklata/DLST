@@ -289,6 +289,11 @@ run multiple scripts in the background (rstudio jobs)
 ```
 -DLST 
 --code  
+---feature_calculate.R  
+---mobilenet.R  
+---preprocessing.py 
+---run.sh 
+---readme.md  
 --data  
 ---TCGA_image 
 ---resize_img 
