@@ -286,16 +286,18 @@ for (i in 1:length(sample_list)) {
 run multiple scripts in the background (rstudio jobs)
 
 ## File fold example
--DLST
---code
---data
----TCGA_image
----resize_img
----norm_img
----thumbnail
----V2_2_normal_epoch16
---result
+```
+-DLST 
+--code  
+--data  
+---TCGA_image 
+---resize_img 
+---norm_img 
+---thumbnail  
+---V2_2_normal_epoch16  
+--result  
 --ref_information
+```
 
 ## Reference
 
