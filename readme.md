@@ -294,7 +294,10 @@ run multiple scripts in the background (rstudio jobs)
 ---preprocessing.py 
 ---run.sh 
 --data  
----TCGA_image 
+---TCGA_image # each fold contains 10 svs image
+----20220501 
+----20220502
+----20220503
 ---resize_img 
 ---norm_img 
 ---thumbnail  
