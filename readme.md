@@ -251,8 +251,8 @@ library(keras)
 library(tfhub)
 library(data.table)
 
-tensorflow::set_random_seed(42,disable_gpu = TRUE) # Here we set seed and use CPU for inference
-# Using CPU or GPU seems do not affect MobileNetV2 inference speed?
+tensorflow::set_random_seed(42,disable_gpu = TRUE) 
+# Here we set seed and use CPU for inference. Using CPU or GPU seems do not affect MobileNetV2 inference speed?
 
 # Calculate Feature --------------------------------------------------------------
 model = load_model_tf(filepath = 'V2_2_normal_epoch16')
