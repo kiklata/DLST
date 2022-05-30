@@ -6,16 +6,16 @@ rm(list = ls())
 library(keras)
 library(tfhub)
 library(data.table)
-
-tensorflow::set_random_seed(42,disable_gpu = TRUE) 
-# Here we set seed and use CPU for inference. Using CPU or GPU seems do not affect MobileNetV2 inference speed?
+tensorflow::set_random_seed(42,disable_gpu = TRUE)
+# args = commandArgs(T)
 
 # Calculate Feature --------------------------------------------------------------
 model = load_model_tf(filepath = 'D:/bioinfo/DLSPseq/data/V2_2_normal_epoch16')
 #summary(model)
 model_feature = keras_model(inputs = model$input,outputs = get_layer(model, 'global_average_pooling2d_1')$output)
 
-path = 'D:/bioinfo/DLSPseq/data/norm_img/test' # path to parent dir of pics
+path = 'D:/bioinfo/DLSPseq/data/norm_img/test'
+# path = paste0('D:/bioinfo/DLSPseq/data/norm_img/', as.character(args[1])) # path to parent dir of pics
 sample_list = list.dirs(path, recursive = F)
 sample_step = nchar(path) + 2
 img_step = nchar(sample_list[1]) + 2

@@ -21,10 +21,10 @@ args_list = sys.argv
 '''imgfile path'''
 work_to_be_done = str(args_list[1])
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' started')
-svspath = "/mnt/d/bioinfo/DLSPseq/data/TCGA_image/"+work_to_be_done+'/'
-resizepath = '/mnt/d/bioinfo/DLSPseq/data/resize_img/'+work_to_be_done+'/'
-normpath = '/mnt/d/bioinfo/DLSPseq/data/norm_img/'+work_to_be_done+'/'
-thumbnailpath = '/mnt/d/bioinfo/DLSPseq/data/thumbnail/'+work_to_be_done+'/'
+svspath = "d:/bioinfo/DLSPseq/data/TCGA_image/test"+work_to_be_done+'/'
+resizepath = 'd:/bioinfo/DLSPseq/data/resize_img/'+work_to_be_done+'/'
+normpath = 'd:/bioinfo/DLSPseq/data/norm_img/'+work_to_be_done+'/'
+thumbnailpath = 'd:/bioinfo/DLSPseq/data/thumbnail/'+work_to_be_done+'/'
 
 os.makedirs(resizepath,exist_ok=True)
 os.makedirs(normpath,exist_ok=True)
