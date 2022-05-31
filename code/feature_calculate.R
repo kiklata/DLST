@@ -6,7 +6,7 @@ rm(list = ls())
 library(keras)
 library(tfhub)
 library(data.table)
-tensorflow::set_random_seed(42,disable_gpu = TRUE)
+tensorflow::set_random_seed(42,disable_gpu = FALSE)
 # args = commandArgs(T)
 
 # Calculate Feature --------------------------------------------------------------

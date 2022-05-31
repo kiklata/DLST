@@ -21,7 +21,7 @@ args_list = sys.argv
 '''imgfile path'''
 work_to_be_done = str(args_list[1])
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' started')
-svspath = "d:/bioinfo/DLSPseq/data/TCGA_image/test"+work_to_be_done+'/'
+svspath = "d:/bioinfo/DLSPseq/data/TCGA_image/"+work_to_be_done+'/'
 resizepath = 'd:/bioinfo/DLSPseq/data/resize_img/'+work_to_be_done+'/'
 normpath = 'd:/bioinfo/DLSPseq/data/norm_img/'+work_to_be_done+'/'
 thumbnailpath = 'd:/bioinfo/DLSPseq/data/thumbnail/'+work_to_be_done+'/'
@@ -124,7 +124,7 @@ for filename in files:
     os.makedirs(resizepath +str(filename[0:23]),exist_ok=True)
     for x in range(1, w, seq):
         for y in range(1, h, seq):
-            img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.ANTIALIAS)
+            img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.Resampling.LANCZOS)
             #img11=img1.convert("RGB")
             #img111=img11.resize((224,224),Image.ANTIALIAS)
             #grad=getGradientMagnitude(np.array(img111))
