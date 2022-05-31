@@ -3,7 +3,6 @@
 '''import module'''
 from __future__ import division
 import os
-from pickle import TRUE
 #os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import sys
 import time
@@ -12,8 +11,7 @@ import numpy as np
 from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 import openslide 
-from resizeimage import resizeimage
-import string
+from alive_progress import alive_bar
 
 
 args_list = sys.argv
@@ -101,6 +99,7 @@ def normalizeStaining(img, saveFile=None, Io=240, alpha=1, beta=0.15,sample='sam
     return Inorm #, H, E
 
 '''resize TCGA svs to 224X224 pixel jpeg in 40X scope'''
+
 files= os.listdir(svspath)
 for filename in files:
     print(filename[0:23])
@@ -112,7 +111,6 @@ for filename in files:
     thumb.save(thumbnailpath + str(filename[0:23]) + '.jpg', 'JPEG', optimize=True, quality=100)
     with open(thumbnailpath+'img_scale.txt','a') as log:
         log.write(str(filename[0:23])+'\t'+'svs_size'+'\t'+str(svs_size)+'\t'+'thumb_size'+'\t'+str(thumb_size)+'\n')
-        
     if str(img.properties.values.__self__.get('tiff.ImageDescription')).find('AppMag = 40') != -1:
         sz=220
         seq=400
@@ -138,15 +136,17 @@ print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' re
 files= os.listdir(resizepath) 
 for filenames in files:
     print(filenames)
-    for imgs in os.listdir(resizepath+filenames):
-        img =np.array(Image.open(resizepath+filenames+"/"+imgs))
-        try:
-            normalizeStaining(img = img,
-                          saveFile = 1,
-                          alpha = 1,
-                          beta =0.15,sample=filenames,img_file=imgs)
-        except:
-            with open(normpath+'error_img.txt','a') as log:
-                log.write(filenames+'/'+imgs+'\n')
+    with alive_bar(len(os.listdir(resizepath+filenames))) as bar:
+        for imgs in os.listdir(resizepath+filenames):
+            bar()
+            img =np.array(Image.open(resizepath+filenames+"/"+imgs))
+            try:
+                normalizeStaining(img = img,
+                            saveFile = 1,
+                            alpha = 1,
+                            beta =0.15,sample=filenames,img_file=imgs)
+            except:
+                with open(normpath+'error_img.txt','a') as log:
+                    log.write(filenames+'/'+imgs+'\n')
         
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' normalized')

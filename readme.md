@@ -79,7 +79,6 @@ Then we applied our model to TCGA breast cancer H&E image
 '''import module'''
 from __future__ import division
 import os
-from pickle import TRUE
 #os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import sys
 import time
@@ -88,8 +87,7 @@ import numpy as np
 from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 import openslide 
-from resizeimage import resizeimage
-import string
+from alive_progress import alive_bar
 
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'started')
 
@@ -212,16 +210,18 @@ print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'resized')
 files= os.listdir(resizepath) 
 for filenames in files:
     print(filenames)
-    for imgs in os.listdir(resizepath+filenames):
-        img =np.array(Image.open(resizepath+filenames+"/"+imgs))
-        try:
-            normalizeStaining(img = img,
-                          saveFile = 1,
-                          alpha = 1,
-                          beta =0.15,sample=filenames,img_file=imgs)
-        except:
-            with open(normpath+'error_img.txt','a') as log:
-                log.write(filenames+'/'+imgs+'\n')
+    with alive_bar(len(os.listdir(resizepath+filenames))) as bar:
+        for imgs in os.listdir(resizepath+filenames):
+            bar()
+            img =np.array(Image.open(resizepath+filenames+"/"+imgs))
+            try:
+                normalizeStaining(img = img,
+                            saveFile = 1,
+                            alpha = 1,
+                            beta =0.15,sample=filenames,img_file=imgs)
+            except:
+                with open(normpath+'error_img.txt','a') as log:
+                    log.write(filenames+'/'+imgs+'\n')
         
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'normalized')
 ```
