@@ -226,19 +226,10 @@ for filenames in files:
 print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'normalized')
 ```
 
-And process 3X10 svs image in parallel
+run
 
 ```shell
-# !/bin/bash
-python ~/DLST/mycode/preprocessing.py $1 &
-python ~/DLST/mycode/preprocessing.py $2 &
-python ~/DLST/mycode/preprocessing.py $3
-```
-
-save as 'run.sh', then run
-
-```shell
-run.sh 20220501 20220502 2220503
+preprocessing.py 20220501
 ```
 
 ## Calculate tiles features
