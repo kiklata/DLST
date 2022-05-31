@@ -21,7 +21,7 @@ model %>% compile(
 
 # Load training data ------------------------------------------------------
 image_generator <- image_data_generator( rescale=1/255,validation_split = 0.2)
-data_root<- "/mnt/d/bioinfo/DLSPseq/ref_information/train_Data/train/"
+data_root<- "d:/bioinfo/DLSPseq/ref_information/train_Data/train/"
 training_data <- flow_images_from_directory(
   directory = data_root, 
   generator = image_generator,
