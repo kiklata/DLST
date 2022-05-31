@@ -200,9 +200,7 @@ for filename in files:
     os.makedirs(resizepath +str(filename[0:23]),exist_ok=True)
     for x in range(1, w, seq):
         for y in range(1, h, seq):
-            img1=img.read_region(location=(x,y), level=0, size=(sz,sz))
-            img11=img1.convert("RGB")
-            img111=img11.resize((224,224),Image.ANTIALIAS)
+            img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.Resampling.LANCZOS)
             grad=getGradientMagnitude(np.array(img111))
             unique, counts = np.unique(grad, return_counts=True)
             if counts[np.argwhere(unique<=20)].sum() < 224*224*0.6:                
