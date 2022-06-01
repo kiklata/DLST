@@ -35,13 +35,13 @@ validation_data <- flow_images_from_directory(
 model %>% fit(
     training_data, 
     steps_per_epoch = training_data$n/training_data$batch_size,
-    validation_data = validation_data,epochs = 15)
+    validation_data = validation_data,epochs = 100)
 save_model_tf(object = model, filepath = "V2_2_normal_epoch16")
 
 # Test model --------------------------------------------------------------
 model <- load_model_tf(filepath = "V2_2_normal_epoch16")
 image_generator1 <- image_data_generator( rescale=1/255)
-test_root<-'/mnt/d/bioinfo/DLSPseq/ref_information/train_Data/test/'
+test_root<-'d:/bioinfo/DLSPseq/ref_information/train_Data/test/'
 test_data <- flow_images_from_directory(
   directory = test_root, 
   generator = image_generator1,

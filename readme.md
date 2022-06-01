@@ -242,6 +242,7 @@ library(data.table)
 
 tensorflow::set_random_seed(42,disable_gpu = TRUE) 
 # Here we set seed and use CPU for inference. Using CPU or GPU seems do not affect MobileNetV2 inference speed?
+# Benchmark on 10,000 224X224 pixels tiles, CPU i7-10875H 14.2 mins, GPU RTX2060m 13.5 mins
 
 # Calculate Feature --------------------------------------------------------------
 model = load_model_tf(filepath = 'V2_2_normal_epoch16')
