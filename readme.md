@@ -276,9 +276,8 @@ for (i in 1:length(sample_list)) {
 }
 ```
 
-run multiple scripts in the background (rstudio jobs)
-
 ## File folder example
+
 ```
 -DLST 
 --code  
