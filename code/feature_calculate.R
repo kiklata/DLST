@@ -6,7 +6,7 @@ rm(list = ls())
 library(keras)
 library(tfhub)
 library(data.table)
-tensorflow::set_random_seed(42,disable_gpu = TRUE)
+tensorflow::set_random_seed(42,disable_gpu = T)
 # args = commandArgs(T)
 
 # Calculate Feature --------------------------------------------------------------
@@ -14,7 +14,7 @@ model = load_model_tf(filepath = 'D:/bioinfo/DLSPseq/data/V2_2_normal_epoch16')
 #summary(model)
 model_feature = keras_model(inputs = model$input,outputs = get_layer(model, 'global_average_pooling2d_1')$output)
 
-path = 'D:/bioinfo/DLSPseq/data/norm_img/20220607'
+path = 'D:/bioinfo/DLSPseq/data/norm_img/test10000'
 # path = paste0('D:/bioinfo/DLSPseq/data/norm_img/', as.character(args[1])) # path to parent dir of pics
 sample_list = list.dirs(path, recursive = F)
 sample_step = nchar(path) + 2
