@@ -25,12 +25,12 @@ for (i in 1:length(sample_list)) {
   print(substring(sample_list[i],sample_step))
 
   pb = progress_bar$new(
-    format = '[:bar] :current/:total in :elapsed eta: :eta',
+    format = '[:bar] :current/:total in :elapsedfull eta: :eta',
     total = length(img_list), clear = FALSE, width = 80
   )
   
   img_features = list()
-  start_time = Sys.time()
+#  start_time = Sys.time()
   for (k in 1:length(img_list)) {
     img = image_load(img_list[k], target_size = c(224,224))
     x = image_to_array(img)
@@ -44,8 +44,8 @@ for (i in 1:length(sample_list)) {
   }
   img_features = as.data.frame(t(rbindlist(list(img_features))))
   save(img_features,file = paste0(sample_list[i],'_train_features.Rdata'))
-  end_time = Sys.time()
-  print(end_time-start_time)
+#  end_time = Sys.time()
+#  print(end_time-start_time)
 }
 
 
