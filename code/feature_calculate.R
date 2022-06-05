@@ -8,7 +8,6 @@ library(tfhub)
 library(data.table)
 library(progress)
 tensorflow::set_random_seed(42,disable_gpu = T)
-# args = commandArgs(T)
 
 # Calculate Feature --------------------------------------------------------------
 model = load_model_tf(filepath = 'D:/bioinfo/DLSPseq/data/V2_2_normal_epoch16')
@@ -16,7 +15,6 @@ model = load_model_tf(filepath = 'D:/bioinfo/DLSPseq/data/V2_2_normal_epoch16')
 model_feature = keras_model(inputs = model$input,outputs = get_layer(model, 'global_average_pooling2d_1')$output)
 
 path = 'D:/bioinfo/DLSPseq/data/norm_img/20220608'
-# path = paste0('D:/bioinfo/DLSPseq/data/norm_img/', as.character(args[1])) # path to parent dir of pics
 sample_list = list.dirs(path, recursive = F)
 sample_step = nchar(path) + 2
 img_step = nchar(sample_list[1]) + 2
@@ -30,7 +28,6 @@ for (i in 1:length(sample_list)) {
   )
   
   img_features = list()
-#  start_time = Sys.time()
   for (k in 1:length(img_list)) {
     img = image_load(img_list[k], target_size = c(224,224))
     x = image_to_array(img)
@@ -44,8 +41,6 @@ for (i in 1:length(sample_list)) {
   }
   img_features = as.data.frame(t(rbindlist(list(img_features))))
   save(img_features,file = paste0(sample_list[i],'_train_features.Rdata'))
-#  end_time = Sys.time()
-#  print(end_time-start_time)
 }
 
 
