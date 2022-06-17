@@ -47,5 +47,6 @@ for (i in 1:ncol(sample_ST_zero_filter)) {
 
 cor_results =  rbindlist(cor_list)
 cor_results = na.omit(cor_results)
+cor_results$pvalue_adj = p.adjust(cor_results$pvalue,method = 'BH')
 
 saveRDS(cor_results,file = paste0(sample,'lasso_cor_results'))
