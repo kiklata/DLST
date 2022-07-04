@@ -5,9 +5,8 @@
 In R environment, we use interface of tensorflow and keras
 
 ```R
-
+# in R 
 setwd('DLST') # set workdir
-
 source('code/mobilenet_classification.R')
 ```
 
@@ -24,12 +23,14 @@ We use spatial transcriptomics data (HER2 breast cancer) from her2st<sup>1</sup>
 Then we applied our model to TCGA breast cancer H&E image
 
 ```python
+# in python 
 code/preprocessing.py 20220501
 ```
 
 ## Calculate tiles features
 
 ```R
+# in R
 source('code/feature_calculate.R')
 ```
 
