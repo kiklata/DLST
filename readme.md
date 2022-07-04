@@ -299,6 +299,10 @@ for (i in 1:length(sample_list)) {
 --readme.md
 ```
 
+## normed TCGA image tiles
+
+[Tiles](pan.baidu.com/s/4iClXbsp)
+
 ## Reference
 
 <sup>1</sup> Spatial deconvolution of HER2-positive breast cancer delineates tumor-associated cell type interactions    
