@@ -301,7 +301,7 @@ for (i in 1:length(sample_list)) {
 
 ## normed TCGA image tiles
 
-[Tiles](https://pan.baidu.com/s/4iClXbsp)
+[Tiles](https://pan.baidu.com/s/1jf_9ckPXsCGwZGybsVfm8A?pwd=zdh5)
 
 ## Reference
 
