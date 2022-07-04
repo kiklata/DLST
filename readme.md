@@ -47,6 +47,7 @@ source('code/feature_calculate.R')
 ---preprocessing.py  
 ---regression_train_dataset_generate.R  
 ---test_dist.R  
+---umap_plot.R 
 --data  
 ---TCGA_image # each fold contains 10 svs image
 ----20220501 
