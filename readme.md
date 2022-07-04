@@ -8,7 +8,7 @@ In R environment, we use interface of tensorflow and keras
 
 setwd('DLST') # set workdir
 
-source('code/mobilenet_classification')
+source('code/mobilenet_classification.R')
 ```
 
 ## Image normalization
@@ -30,7 +30,7 @@ code/preprocessing.py 20220501
 ## Calculate tiles features
 
 ```R
-source('code/feature_calc')
+source('code/feature_calculate.R')
 ```
 
 ## File folder example
@@ -38,10 +38,14 @@ source('code/feature_calc')
 ```
 -DLST 
 --code  
----feature_calculate.R  
----mobilenet.R  
----preprocessing.py 
----run.sh 
+---feature_calculate.R 
+---lasso_result.R  
+---mobilenet.ipynb  
+---mobilenet_classification.R  
+---mobilenet_regression.R  
+---preprocessing.py  
+---regression_train_dataset_generate.R  
+---test_dist.R  
 --data  
 ---TCGA_image # each fold contains 10 svs image
 ----20220501 
