@@ -62,9 +62,19 @@ source('code/feature_calculate.R')
 --readme.md
 ```
 
-## normed TCGA image tiles
+## normed image tiles
 
-[Tiles](https://pan.baidu.com/s/1jf_9ckPXsCGwZGybsVfm8A?pwd=zdh5)
+[TCGA Tiles](https://pan.baidu.com/s/1jf_9ckPXsCGwZGybsVfm8A?pwd=zdh5)
+
+[her2st tiles](https://pan.baidu.com/s/1fZhA31wznStL4f8AqyzBqA?pwd=5ml6)
+
+[NBE tiles](https://pan.baidu.com/s/1p-LENmn5x2_NfFnNhdq8FQ?pwd=3lfp)
+
+# image feature
+
+[her2st](https://pan.baidu.com/s/1T5hE72apuCrCfIPnPt3u4A?pwd=m0vr)
+
+[NBE](https://pan.baidu.com/s/1Y9VKmoJo0kM8M-8nUEYYxQ?pwd=g02e)
 
 ## Reference
 
