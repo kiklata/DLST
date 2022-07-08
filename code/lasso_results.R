@@ -99,6 +99,13 @@ gene_fit = filter(ex_val_cor_results,pvalue_adj<0.05 & abs(estimate)>0.1)
 
 selected_gene = gene_fit$gene
 
-fit_model_list_selected = subset(fit_model_list,fit_model_list$gene %in% selected_gene)
+fit_model_list_selected = list()
+
+i = 1  
+for (list in fit_model_list) {
+  if (list$gene %in% selected_gene) {
+    fit_model_list_selected[[i]] = list
+    i = i+1
+  }}
 
 save(fit_model_list_selected,'fit_model_list_selected.rdata')
