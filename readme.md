@@ -34,6 +34,16 @@ code/preprocessing.py 20220501
 source('code/feature_calculate.R')
 ```
 
+## lasso model fit
+
+```R
+# in R
+source('code/test_dist.R')
+source('code/lasso_result.R')
+```
+
+## TCGA lasso predict
+
 ## File folder example
 
 ```
