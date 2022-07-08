@@ -99,54 +99,59 @@ def normalizeStaining(img, saveFile=None, Io=240, alpha=1, beta=0.15,sample='sam
     return Inorm #, H, E
 
 '''resize TCGA svs to 224X224 pixel jpeg in 40X scope'''
+def resize_func():
+    files= os.listdir(svspath)
+    for filename in files:
+        print(filename[0:23])
+        img = openslide.open_slide(svspath+str(filename))
+        svs_size = img.dimensions
+        #generate thumbnail
+        thumb = img.get_thumbnail((4096,4096))
+        thumb_size = thumb.size
+        thumb.save(thumbnailpath + str(filename[0:23]) + '.jpg', 'JPEG', optimize=True, quality=100)
+        with open(thumbnailpath+'img_scale.txt','a') as log:
+            log.write(str(filename[0:23])+'\t'+'svs_size'+'\t'+str(svs_size)+'\t'+'thumb_size'+'\t'+str(thumb_size)+'\n')
+        if str(img.properties.values.__self__.get('tiff.ImageDescription')).find('AppMag = 40') != -1:
+            sz=220
+            seq=400
+        else:
+            sz=110
+            seq=200
 
-files= os.listdir(svspath)
-for filename in files:
-    print(filename[0:23])
-    img = openslide.open_slide(svspath+str(filename))
-    svs_size = img.dimensions
-    #generate thumbnail
-    thumb = img.get_thumbnail((4096,4096))
-    thumb_size = thumb.size
-    thumb.save(thumbnailpath + str(filename[0:23]) + '.jpg', 'JPEG', optimize=True, quality=100)
-    with open(thumbnailpath+'img_scale.txt','a') as log:
-        log.write(str(filename[0:23])+'\t'+'svs_size'+'\t'+str(svs_size)+'\t'+'thumb_size'+'\t'+str(thumb_size)+'\n')
-    if str(img.properties.values.__self__.get('tiff.ImageDescription')).find('AppMag = 40') != -1:
-        sz=220
-        seq=400
-    else:
-        sz=110
-        seq=200
-
-    [w, h] = img.dimensions
-    os.makedirs(resizepath +str(filename[0:23]),exist_ok=True)
-    for x in range(1, w, seq):
-        for y in range(1, h, seq):
-            img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.Resampling.LANCZOS)
-            #img11=img1.convert("RGB")
-            #img111=img11.resize((224,224),Image.ANTIALIAS)
-            #grad=getGradientMagnitude(np.array(img111))
-            unique, counts = np.unique(getGradientMagnitude(np.array(img111)), return_counts=True)
-            if counts[np.argwhere(unique<=20)].sum() < 224*224*0.6:                
-                img111.save(resizepath + str(filename[0:23]) + "/" + str(x) + "_" + str(y) + '.jpg', 'JPEG', optimize=True, quality=100)
-                
-print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' resized')
+        [w, h] = img.dimensions
+        os.makedirs(resizepath +str(filename[0:23]),exist_ok=True)
+        for x in range(1, w, seq):
+            for y in range(1, h, seq):
+                img111=img.read_region(location=(x,y), level=0, size=(sz,sz)).convert("RGB").resize((224,224),Image.Resampling.LANCZOS)
+                #img11=img1.convert("RGB")
+                #img111=img11.resize((224,224),Image.ANTIALIAS)
+                #grad=getGradientMagnitude(np.array(img111))
+                unique, counts = np.unique(getGradientMagnitude(np.array(img111)), return_counts=True)
+                if counts[np.argwhere(unique<=20)].sum() < 224*224*0.6:                
+                    img111.save(resizepath + str(filename[0:23]) + "/" + str(x) + "_" + str(y) + '.jpg', 'JPEG', optimize=True, quality=100)
+                    
+    print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' resized')
 
 '''normalized'''
-files= os.listdir(resizepath) 
-for filenames in files:
-    print(filenames)
-    with alive_bar(len(os.listdir(resizepath+filenames))) as bar:
-        for imgs in os.listdir(resizepath+filenames):
-            bar()
-            img =np.array(Image.open(resizepath+filenames+"/"+imgs))
-            try:
-                normalizeStaining(img = img,
-                            saveFile = 1,
-                            alpha = 1,
-                            beta =0.15,sample=filenames,img_file=imgs)
-            except:
-                with open(normpath+'error_img.txt','a') as log:
-                    log.write(filenames+'/'+imgs+'\n')
-        
-print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' normalized')
+def norm_func():
+    files= os.listdir(resizepath) 
+    for filenames in files:
+        print(filenames)
+        with alive_bar(len(os.listdir(resizepath+filenames))) as bar:
+            for imgs in os.listdir(resizepath+filenames):
+                bar()
+                img =np.array(Image.open(resizepath+filenames+"/"+imgs))
+                try:
+                    normalizeStaining(img = img,
+                                saveFile = 1,
+                                alpha = 1,
+                                beta =0.15,sample=filenames,img_file=imgs)
+                except:
+                    with open(normpath+'error_img.txt','a') as log:
+                        log.write(filenames+'/'+imgs+'\n')
+            
+    print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),work_to_be_done,' normalized')
+
+resize_func()
+
+norm_func()
