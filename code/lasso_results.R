@@ -17,6 +17,7 @@ library(progress)
 
 setwd("D:/bioinfo/DLSPseq/data")
 
+# threshold = 0.5?
 sample_ST_zero_filter_0.5 = final_norm_exp %>% .[,colMeans(. != 0) >0.5]
 
 
@@ -79,10 +80,15 @@ for (i in 1:length(val_gene)) {
 inter_val_cor_results =  rbindlist(inter_val_cor_list) %>% na.omit(.)
 inter_val_cor_results$pvalue_adj = p.adjust(inter_val_cor_results$pvalue,method = 'BH')
 
-saveRDS(inter_val_cor_results,file = 'her2st_inter_val_cor_results.rds')
+#saveRDS(inter_val_cor_results,file = 'her2st_inter_val_cor_results.rds')
 
 ex_val_cor_results =  rbindlist(ex_val_cor_list) %>% na.omit(.)
 ex_val_cor_results$pvalue_adj = p.adjust(ex_val_cor_results$pvalue,method = 'BH')
 
-saveRDS(ex_val_cor_results,file = 'NBE_ex_val_cor_results.rds')
+#saveRDS(ex_val_cor_results,file = 'NBE_ex_val_cor_results.rds')
 
+
+# val fit gene selection --------------------------------------------------
+
+# p_adj < 0.05? estimate > 0.25?
+gene_fit = filter(ex_val_cor_results,pvalue_adj<0.05 & estimate>0.25) 
