@@ -11,17 +11,20 @@ library(data.table)
 
 # sample ------------------------------------------------------------------
 
-id_to_pred = sample(1:nrow(TCGA_feature),nrow(TCGA_feature)/20,replace = FALSE)
-tile_to_pred = TCGA_feature[id_pred,]
+id_to_pred = sample(1:nrow(TCGA_feature),500,replace = FALSE)
+tile_to_pred = TCGA_feature[id_to_pred,]
 
 # gene predict ------------------------------------------------------------
 
+# FASN
+
+fit = fit_model_list_selected_pearson_p_adj_0.05_esti_0.1[[112]]
+
 best = fit$lambda.1se
-gene_exp_pred = predict(fit,s = best,newx = tile_to_pred) 
 
-gene_exp_pred = apply(gene_exp_pred,2,mean)
+gene_exp_pred = predict(fit,s = best,newx = as.matrix(tile_to_pred))
 
-mean_gene_exp_pred = gene_exp_pred[nrow(gene_exp_pred),]
+gene_exp_pred_mean = mean(gene_exp_pred)
 
 
 # loop --------------------------------------------------------------------

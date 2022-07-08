@@ -119,15 +119,26 @@ gene_fit_spearman = filter(ex_val_cor_results_spearman,pvalue_adj<0.05 & abs(est
 
 # save selected fit model -------------------------------------------------
 
-selected_gene = gene_fit_pearson$gene
+selected_gene_pearson_p_adj_0.05_esti_0.1 = gene_fit_pearson_p_adj_0.05_esti_0.1$gene
+selected_gene_spearman_p_adj_0.05_esti_0.1 = gene_fit_spearman_p_adj_0.05_esti_0.1$gene
 
-fit_model_list_selected = list()
+fit_model_list_selected_pearson_p_adj_0.05_esti_0.1 = list()
+fit_model_list_selected_spearman_p_adj_0.05_esti_0.1 = list()
 
 i = 1  
 for (list in fit_model_list) {
-  if (list$gene %in% selected_gene) {
-    fit_model_list_selected[[i]] = list
+  if (list$gene %in% selected_gene_pearson_p_adj_0.05_esti_0.1) {
+    fit_model_list_selected_pearson_p_adj_0.05_esti_0.1[[i]] = list
     i = i+1
   }}
 
-save(fit_model_list_selected,'fit_model_list_selected.rdata')
+i = 1  
+for (list in fit_model_list) {
+  if (list$gene %in% selected_gene_spearman_p_adj_0.05_esti_0.1) {
+    fit_model_list_selected_spearman_p_adj_0.05_esti_0.1[[i]] = list
+    i = i+1
+  }}
+
+
+save(fit_model_list_selected_pearson_p_adj_0.05_esti_0.1,file = 'fit_model_list_selected_pearson_p_adj_0.05_esti_0.1.rdata')
+save(fit_model_list_selected_spearman_p_adj_0.05_esti_0.1,file = 'fit_model_list_selected_spearman_p_adj_0.05_esti_0.1.rdata')
