@@ -49,13 +49,16 @@ pb = progress_bar$new(
 
 # loop model validation ------------------------------------------------
 
-inter_val_cor_list = list()
-ex_val_cor_list = list()
+inter_val_cor_list_pearson = list()
+inter_val_cor_list_spearman = list()
+ex_val_cor_list_pearson = list()
+ex_val_cor_list_spearman = list()
 fit_model_list = list()
 
 for (i in 1:length(val_gene)) {
+
   pb$tick()
-  
+
   target_gene = val_gene[i]
 
   train_y = as.matrix(sample_ST_zero_filter_0.5[,target_gene][train_id])
@@ -68,36 +71,55 @@ for (i in 1:length(val_gene)) {
   # internal val
   inter_val_predicted = predict(fit,s = best,newx = internal_val_x)
   inter_val_y = as.matrix(sample_ST_zero_filter_0.5[,target_gene][inter_val_id])
-  inter_fit = cor.test(inter_val_predicted,inter_val_y)
-  inter_val_cor_list[[i]] = data.frame(gene = target_gene,pvalue = inter_fit$p.value,estimate = inter_fit$estimate)
+  
+  # cor.test(method = pearson? or spearman?)
+  inter_fit_pearson = cor.test(inter_val_predicted,inter_val_y,method = c('pearson'))
+  inter_val_cor_list_pearson[[i]] = data.frame(gene = target_gene,pvalue = inter_fit_pearson$p.value,estimate = inter_fit_pearson$estimate)
+  
+  inter_fit_spearman = cor.test(inter_val_predicted,inter_val_y,method = c('spearman'))
+  inter_val_cor_list_spearman[[i]] = data.frame(gene = target_gene,pvalue = inter_fit_spearman$p.value,estimate = inter_fit_spearman$estimate)
+  
   # external val
   ex_val_predicted = predict(fit,s = best,newx = ex_val_x)
   ex_val_y = as.matrix(four_ST[,target_gene])
-  ex_fit = cor.test(ex_val_predicted,ex_val_y)
-  ex_val_cor_list[[i]] = data.frame(gene = target_gene,pvalue = ex_fit$p.value,estimate = ex_fit$estimate)
+  ex_fit_pearson = cor.test(ex_val_predicted,ex_val_y,method = c('pearson'))
+  ex_val_cor_list_pearson[[i]] = data.frame(gene = target_gene,pvalue = ex_fit_pearson$p.value,estimate = ex_fit_pearson$estimate)
+  
+  ex_fit_spearman = cor.test(ex_val_predicted,ex_val_y,method = c('spearman'))
+  ex_val_cor_list_spearman[[i]] = data.frame(gene = target_gene,pvalue = ex_fit_spearman$p.value,estimate = ex_fit_spearman$estimate)
+  
   }
 
 saveRDS(fit_model_list,file = 'fit_model_list.rds')
 
 # pred y cor results list --------------------------------------------------------
-inter_val_cor_results =  rbindlist(inter_val_cor_list) %>% na.omit(.)
-inter_val_cor_results$pvalue_adj = p.adjust(inter_val_cor_results$pvalue,method = 'BH')
-saveRDS(inter_val_cor_results,file = 'her2st_inter_val_cor_results.rds')
+inter_val_cor_results_pearson =  rbindlist(inter_val_cor_list_pearson) %>% na.omit(.)
+inter_val_cor_results_pearson$pvalue_adj = p.adjust(inter_val_cor_results_pearson$pvalue,method = 'BH')
+saveRDS(inter_val_cor_results_pearson,file = 'her2st_inter_val_cor_results_pearson.rds')
 
-ex_val_cor_results =  rbindlist(ex_val_cor_list) %>% na.omit(.)
-ex_val_cor_results$pvalue_adj = p.adjust(ex_val_cor_results$pvalue,method = 'BH')
-saveRDS(ex_val_cor_results,file = 'NBE_ex_val_cor_results.rds')
+ex_val_cor_results_pearson =  rbindlist(ex_val_cor_list_pearson) %>% na.omit(.)
+ex_val_cor_results_pearson$pvalue_adj = p.adjust(ex_val_cor_results_pearson$pvalue,method = 'BH')
+saveRDS(ex_val_cor_results_pearson,file = 'NBE_ex_val_cor_results_pearson.rds')
 
+inter_val_cor_results_spearman =  rbindlist(inter_val_cor_list_spearman) %>% na.omit(.)
+inter_val_cor_results_spearman$pvalue_adj = p.adjust(inter_val_cor_results_spearman$pvalue,method = 'BH')
+saveRDS(inter_val_cor_list_spearman,file = 'her2st_inter_val_cor_results_spearman.rds')
+
+ex_val_cor_results_spearman =  rbindlist(ex_val_cor_list_spearman) %>% na.omit(.)
+ex_val_cor_results_spearman$pvalue_adj = p.adjust(ex_val_cor_results_spearman$pvalue,method = 'BH')
+saveRDS(ex_val_cor_results_spearman,file = 'NBE_ex_val_cor_results_spearman.rds')
 
 # val fit gene selection --------------------------------------------------
 
 #p_adj < 0.05? estimate > 0.1?
-gene_fit = filter(ex_val_cor_results,pvalue_adj<0.05 & abs(estimate)>0.1) 
+gene_fit_pearson = filter(ex_val_cor_results_pearson,pvalue_adj<0.05 & abs(estimate)>0.1) 
+
+gene_fit_spearman = filter(ex_val_cor_results_spearman,pvalue_adj<0.05 & abs(estimate)>0.1) 
 
 
 # save selected fit model -------------------------------------------------
 
-selected_gene = gene_fit$gene
+selected_gene = gene_fit_pearson$gene
 
 fit_model_list_selected = list()
 
