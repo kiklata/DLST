@@ -10,7 +10,7 @@ model = load_model_tf(filepath = 'D:/bioinfo/DLSPseq/data/V2_2_normal_epoch16')
 #summary(model)
 model_feature = keras_model(inputs = model$input,outputs = get_layer(model, 'global_average_pooling2d_1')$output)
 
-path = 'D:/bioinfo/DLSPseq/data/he2st_st_data/her2st_normed/tile'
+path = 'D:/bioinfo/DLSPseq/data/norm_img/TCGA-A2-A0EY-01Z-00-DX1'
 img_list = list.files(path, full.names = T)
 
 pb = progress_bar$new(
@@ -18,6 +18,8 @@ pb = progress_bar$new(
     total = length(img_list), clear = FALSE, width = 80)
   
 img_features = list()
+
+
 for (k in 1:length(img_list)) {
     img = image_load(img_list[k], target_size = c(224,224))
     x = image_to_array(img)
@@ -30,6 +32,7 @@ for (k in 1:length(img_list)) {
     
   }
 img_features = as.data.frame(t(rbindlist(list(img_features))))
-save(img_features,file = paste0('D:/bioinfo/DLSPseq/her2st_features.Rdata'))
+save(img_features,file = paste0('D:/bioinfo/DLSPseq/data/features/TCGA-A2-A0EY-01Z-00-DX1_features.Rdata'))
+
 
 

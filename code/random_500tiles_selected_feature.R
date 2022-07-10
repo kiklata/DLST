@@ -21,9 +21,14 @@ sample_list = list.dirs(path, recursive = F)
 sample_step = nchar(path) + 2
 img_step = nchar(sample_list[1]) + 2
 for (i in 1:length(sample_list)) {
-  img_list = list.files(sample_list[i], full.names = T)
-  print(substring(sample_list[i],sample_step))
 
+  img_list = list.files(sample_list[i], full.names = T)
+  
+  id_to_pred = sample(1:length(img_list),500,replace = FALSE)
+  img_list = as.list(img_list[id_to_pred])
+  
+  print(substring(sample_list[i],sample_step))
+  
   pb = progress_bar$new(
     format = '[:bar] :current/:total in :elapsedfull eta: :eta',
     total = length(img_list), clear = FALSE, width = 80
@@ -31,13 +36,15 @@ for (i in 1:length(sample_list)) {
   
   img_features = list()
   for (k in 1:length(img_list)) {
-    img = image_load(img_list[k], target_size = c(224,224))
+
+    img = image_load(img_list[[k]], target_size = c(224,224))
     x = image_to_array(img)
     features = predict(model_feature,
                        imagenet_preprocess_input(array_reshape(x, c(1, dim(x)))))
     img_features[[k]] = features
-    names(img_features)[[k]] = substring(img_list[k],img_step)
-
+    
+    names(img_features)[[k]] = substring(img_list[[k]],img_step)
+    
     pb$tick()
     
   }
