@@ -1,13 +1,27 @@
+library(umap)
+
+data <- umap(`TCGA-A2-A0EY-01Z-00-DX1_pred_ST`[,2:229],n_neighbors=7L,min_dist =0.6,
+             method = 'umap-learn',
+             metric="manhattan")
+
+library(dplyr)
+
+data$layout %>% 
+     as.data.frame() %>% 
+     setNames(c("umap1", "umap2")) %>% 
+     ggplot(aes(umap1, umap2)) +
+     geom_point(size = 2) +
+     theme_bw()
+
+
 library(ggplot2)
 library(ggsci)
 
-data = as.data.frame(data)
-
 p <- 
-  ggplot(data = data,aes(V1,V2,color = group_info)) + geom_point() +
-  ggtitle(paste0('neighbors_',fe_umap$config$n_neighbors,
-                 '_min_dist_',fe_umap$config$min_dist,
-                 '_metric_',fe_umap$config$metric)) + scale_color_lancet() +
+  ggplot(data = as.data.frame(data$layout),aes(V1,V2)) + geom_point() +
+  ggtitle(paste0('neighbors_',data$config$n_neighbors,
+                 '_min_dist_',data$config$min_dist,
+                 '_metric_',data$config$metric)) + scale_color_lancet() +
   theme(panel.grid=element_blank(),
         panel.background=element_rect(fill='transparent', color='black'),
         plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches"),
@@ -22,3 +36,15 @@ p <-
         legend.text = element_text(colour = "black", face="plain", size=13))
 
 p
+
+library(Seurat)
+
+counts = FindVariableFeatures(counts)
+counts <- RunPCA(counts)
+counts <- FindNeighbors(counts, reduction = "pca", dims = 1:50)
+counts <- FindClusters(counts, 
+                        resolution = seq(from = 0.1, 
+                                         to = 1.0, 
+                                         by = 0.1))
+counts <- RunUMAP(counts, reduction = "pca", dims = 1:50)
+DimPlot(counts,reduction = 'umap')
