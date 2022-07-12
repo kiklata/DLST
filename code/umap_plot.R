@@ -36,15 +36,3 @@ p <-
         legend.text = element_text(colour = "black", face="plain", size=13))
 
 p
-
-library(Seurat)
-
-counts = FindVariableFeatures(counts)
-counts <- RunPCA(counts)
-counts <- FindNeighbors(counts, reduction = "pca", dims = 1:50)
-counts <- FindClusters(counts, 
-                        resolution = seq(from = 0.1, 
-                                         to = 1.0, 
-                                         by = 0.1))
-counts <- RunUMAP(counts, reduction = "pca", dims = 1:50)
-DimPlot(counts,reduction = 'umap')
